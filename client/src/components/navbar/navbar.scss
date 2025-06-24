@@ -5,9 +5,13 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  z-index: 1000;
 
   a {
     transition: all 0.4s ease;
+    position: relative;
+    z-index: 1001;
 
     @include sm {
       display: none;
@@ -23,6 +27,8 @@ nav {
     display: flex;
     align-items: center;
     gap: 50px;
+    position: relative;
+    z-index: 1001;
 
     .logo {
       font-weight: bold;
@@ -53,6 +59,8 @@ nav {
     justify-content: flex-end;
     background-color: #fcf5f3;
     height: 100%;
+    position: relative;
+    z-index: 1001;
 
     @include md {
       background-color: transparent;
@@ -67,6 +75,8 @@ nav {
       display: flex;
       align-items: center;
       font-weight: bold;
+      position: relative;
+      z-index: 1001;
 
       img{
         width: 40px;
@@ -102,7 +112,6 @@ nav {
           align-items: center;
           justify-content: center;
         }
-
       }
     }
 
@@ -126,27 +135,37 @@ nav {
     }
 
     .menu {
-      position: absolute;
-      top: 0;
-      right: -50%;
-      background-color: black;
-      color: white;
-      height: 100vh;
-      width: 50%;
-      transition: all 1s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-
-      &.active {
-        right: 0;
-      }
+      display: none;
 
       @include sm {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        background-color: #fcf5f3;
+        height: 100vh;
+        width: 100%;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        z-index: 1002;
+
+        &.active {
+          right: 0;
+        }
+
         a {
-          display: initial;
+          display: block;
+          font-size: 20px;
+          color: #333;
+          text-decoration: none;
+          padding: 15px 30px;
+          
+          &:hover {
+            color: #fece51;
+          }
         }
       }
     }

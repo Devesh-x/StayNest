@@ -3,9 +3,13 @@
 .homePage {
   display: flex;
   height: 100%;
+  position: relative;
+  z-index: 1;
 
   .textContainer {
     flex: 3;
+    position: relative;
+    z-index: 2;
 
     .wrapper {
       padding-right: 100px;
@@ -65,6 +69,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    z-index: 1;
 
     @include md {
       display: none;
@@ -74,6 +79,7 @@
       width: 115%;
       position: absolute;
       right: 0;
+      pointer-events: none;
 
       @include lg {
         width: 105%;

@@ -21,7 +21,12 @@ function Filter() {
   };
 
   const handleFilter = () => {
-    setSearchParams(query);
+    const filteredQuery = Object.fromEntries(
+      Object.entries(query)
+        .map(([k, v]) => [k, typeof v === "string" ? v.trim() : v])
+        .filter(([_, v]) => v !== "")
+    );
+    setSearchParams(filteredQuery);
   };
 
   return (

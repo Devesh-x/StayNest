@@ -36,6 +36,23 @@ export const getPosts = async (req, res) => {
 
     console.log("Search criteria:", whereClause);
 
+    // If no filters are set, return all posts
+    if (Object.keys(whereClause).length === 0) {
+      const posts = await prisma.post.findMany({
+        include: {
+          user: {
+            select: {
+              username: true,
+              avatar: true,
+            },
+          },
+        },
+      });
+      console.log(`Found ${posts.length} posts (no filters)`);
+      return res.status(200).json(posts);
+    }
+
+    // Otherwise, apply filters
     const posts = await prisma.post.findMany({
       where: whereClause,
       include: {
@@ -47,8 +64,7 @@ export const getPosts = async (req, res) => {
         },
       },
     });
-
-    console.log(`Found ${posts.length} posts`);
+    console.log(`Found ${posts.length} posts (with filters)`);
     res.status(200).json(posts);
   } catch (err) {
     console.log("Error in getPosts:", err);
@@ -75,8 +91,8 @@ export const getPost = async (req, res) => {
     const token = req.cookies?.token;
 
     if (token) {
-      jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, payload) => {
-        if (!err) {
+      try {
+        const payload = jwt.verify(token, process.env.JWT_SECRET_KEY);
           const saved = await prisma.savedPost.findUnique({
             where: {
               userId_postId: {
@@ -85,14 +101,15 @@ export const getPost = async (req, res) => {
               },
             },
           });
-          res.status(200).json({ ...post, isSaved: saved ? true : false });
+        return res.status(200).json({ ...post, isSaved: saved ? true : false });
+      } catch (err) {
+        // Token invalid, fall through to send isSaved: false
         }
-      });
     }
-    res.status(200).json({ ...post, isSaved: false });
+    return res.status(200).json({ ...post, isSaved: false });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Failed to get post" });
+    return res.status(500).json({ message: "Failed to get post" });
   }
 };
 

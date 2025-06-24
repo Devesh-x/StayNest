@@ -11,12 +11,11 @@ function HomePage() {
     <div className="homePage">
       <div className="textContainer">
         <div className="wrapper">
-          <h1 className="title">Find Real Estate & Get Your Dream Place</h1>
+          <h1 className="title">Your Dream Property Is Just a Click Away</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos
-            explicabo suscipit cum eius, iure est nulla animi consequatur
-            facilis id pariatur fugit quos laudantium temporibus dolor ea
-            repellat provident impedit!
+          Welcome to StayNest<br/>
+           Your one-stop platform to list, rent, or buy properties with ease.
+            Whether you're a homeowner or a buyer, StayNest makes property dealing seamless and simple.
           </p>
           <SearchBar />
           <div className="boxes">

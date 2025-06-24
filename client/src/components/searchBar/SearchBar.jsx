@@ -8,8 +8,8 @@ function SearchBar() {
   const [query, setQuery] = useState({
     type: "buy",
     city: "",
-    minPrice: 0,
-    maxPrice: 0,
+    minPrice: "",
+    maxPrice: "",
   });
 
   const switchType = (val) => {
@@ -57,7 +57,12 @@ function SearchBar() {
           onChange={handleChange}
         />
         <Link
-          to={`/list?type=${query.type}&city=${query.city}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`}
+          to={`/list?${[
+            query.type ? `type=${query.type}` : null,
+            query.city ? `city=${encodeURIComponent(query.city)}` : null,
+            query.minPrice !== "" ? `minPrice=${query.minPrice}` : null,
+            query.maxPrice !== "" ? `maxPrice=${query.maxPrice}` : null
+          ].filter(Boolean).join("&")}`}
         >
           <button>
             <img src="/search.png" alt="" />

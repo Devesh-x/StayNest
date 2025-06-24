@@ -43,6 +43,11 @@ app.use(cors(corsOptions));
 app.use(express.json()); 
 app.use(cookieParser());// Middleware to parse JSON bodies
 
+app.use((req, res, next) => {
+  console.log('Request origin:', req.headers.origin);
+  next();
+});
+
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
