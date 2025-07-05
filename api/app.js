@@ -16,12 +16,17 @@ const app = express();
 const allowedOrigins = [
   process.env.CLIENT_URL,
   'http://localhost:5173',
-  'https://stay-nest-nu.vercel.app'
+  'https://stay-nest-nu.vercel.app',
+  'https://staynest-client.vercel.app',
+  'https://stay-nest-git-main-devesh-xs-projects.vercel.app'
 ].filter(Boolean); // Removes undefined/null
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       console.log(`❌ Blocked by CORS: ${origin}`);
@@ -39,6 +44,8 @@ app.use(cookieParser());
 
 app.use((req, res, next) => {
   console.log('➡️ Request Origin:', req.headers.origin);
+  console.log('➡️ Request Method:', req.method);
+  console.log('➡️ Request URL:', req.url);
   next();
 });
 
@@ -61,8 +68,21 @@ app.get("/api/test-db", async (req, res) => {
   }
 });
 
-// ✅ Start server
+// ✅ Health check endpoint
+app.get("/api/health", (req, res) => {
+  res.json({ 
+    message: "API is running", 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// ✅ Start server with dynamic port
+const PORT = process.env.PORT || 8800;
 console.log('Starting server...');
-app.listen(8800, () => {
-  console.log('✅ Server is running on port 8800');
+app.listen(PORT, () => {
+  console.log(`✅ Server is running on port ${PORT}`);
+  console.log(`✅ Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`✅ Database URL: ${process.env.DATABASE_URL ? 'Configured' : 'Missing'}`);
+  console.log(`✅ JWT Secret: ${process.env.JWT_SECRET_KEY ? 'Configured' : 'Missing'}`);
 });
